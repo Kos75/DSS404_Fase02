@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACOEMPRENDEDORES - Panel de Cliente</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <h1>ACOEMPRENDEDORES</h1>
+                <h2>Sistema Financiero</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active">
+                    <a href="#" data-section="products">
+                        <span class="icon">💳</span>
+                        Mis Productos
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-section="transactions">
+                        <span class="icon">💰</span>
+                        Transacciones
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-section="profile">
+                        <span class="icon">👤</span>
+                        Mi Perfil
+                    </a>
+                </li>
+                <li class="logout">
+                    <a href="#" id="logoutBtn">
+                        <span class="icon">🚪</span>
+                        Cerrar Sesión
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h2>Panel de Cliente</h2>
+                <div class="user-info">
+                    <span id="userName">Cliente</span>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Products Section -->
+                <section id="products" class="section active">
+                    <div class="section-header">
+                        <h3>Mis Productos</h3>
+                    </div>
+
+                    <div class="products-grid">
+                        <!-- Accounts -->
+                        <div class="product-category">
+                            <h4>Cuentas</h4>
+                            <div class="product-cards" id="accountsContainer">
+                                <!-- Account cards will be dynamically added here -->
+                            </div>
+                        </div>
+
+                        <!-- Cards -->
+                        <div class="product-category">
+                            <h4>Tarjetas</h4>
+                            <div class="product-cards" id="cardsContainer">
+                                <!-- Card cards will be dynamically added here -->
+                            </div>
+                        </div>
+
+                        <!-- Loans -->
+                        <div class="product-category">
+                            <h4>Préstamos</h4>
+                            <div class="product-cards" id="loansContainer">
+                                <!-- Loan cards will be dynamically added here -->
+                            </div>
+                        </div>
+
+                        <!-- Insurance -->
+                        <div class="product-category">
+                            <h4>Seguros</h4>
+                            <div class="product-cards" id="insuranceContainer">
+                                <!-- Insurance cards will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transactions Section -->
+                <section id="transactions" class="section">
+                    <div class="section-header">
+                        <h3>Historial de Transacciones</h3>
+                    </div>
+
+                    <div class="search-bar">
+                        <input type="text" id="transactionSearch" placeholder="Buscar transacción...">
+                    </div>
+
+                    <div class="table-container">
+                        <table id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Producto</th>
+                                    <th>Tipo</th>
+                                    <th>Monto</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Transaction rows will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Profile Section -->
+                <section id="profile" class="section">
+                    <div class="section-header">
+                        <h3>Mi Perfil</h3>
+                        <button class="btn-primary" id="editProfileBtn">Editar Perfil</button>
+                    </div>
+
+                    <div class="profile-info">
+                        <div class="info-group">
+                            <label>Nombre Completo</label>
+                            <p id="profileName"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Documento de Identidad</label>
+                            <p id="profileDocument"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Fecha de Nacimiento</label>
+                            <p id="profileBirthDate"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Dirección</label>
+                            <p id="profileAddress"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Estado Familiar</label>
+                            <p id="profileMaritalStatus"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Profesión</label>
+                            <p id="profileProfession"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Correo Electrónico</label>
+                            <p id="profileEmail"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Teléfono</label>
+                            <p id="profilePhone"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Lugar de Trabajo</label>
+                            <p id="profileWorkplace"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Dirección de Trabajo</label>
+                            <p id="profileWorkAddress"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Salario Mensual</label>
+                            <p id="profileSalary"></p>
+                        </div>
+                        <div class="info-group">
+                            <label>Otros Ingresos</label>
+                            <p id="profileOtherIncome"></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Perfil</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="editName">Nombre Completo</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editStreet">Calle</label>
+                    <input type="text" id="editStreet" required>
+                </div>
+                <div class="form-group">
+                    <label for="editHouse">Número de Casa</label>
+                    <input type="text" id="editHouse" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCity">Ciudad</label>
+                    <input type="text" id="editCity" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDepartment">Departamento</label>
+                    <input type="text" id="editDepartment" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Correo Electrónico</label>
+                    <input type="email" id="editEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Teléfono</label>
+                    <input type="tel" id="editPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="editWorkplace">Lugar de Trabajo</label>
+                    <input type="text" id="editWorkplace" required>
+                </div>
+                <div class="form-group">
+                    <label for="editWorkAddress">Dirección de Trabajo</label>
+                    <input type="text" id="editWorkAddress" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                    <button type="button" class="btn-secondary close-modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/cliente.js"></script>
+</body>
+</html> 

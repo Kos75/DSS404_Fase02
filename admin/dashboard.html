@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACOEMPRENDEDORES - Panel de Administración</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <h1>ACOEMPRENDEDORES</h1>
+                <h2>Sistema Financiero</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active">
+                    <a href="#" data-section="employees">
+                        <span class="icon">👥</span>
+                        Empleados
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-section="products">
+                        <span class="icon">💳</span>
+                        Productos
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-section="reports">
+                        <span class="icon">📊</span>
+                        Reportes
+                    </a>
+                </li>
+                <li class="logout">
+                    <a href="#" id="logoutBtn">
+                        <span class="icon">🚪</span>
+                        Cerrar Sesión
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h2>Panel de Administración</h2>
+                <div class="user-info">
+                    <span id="userName">Admin</span>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Employees Section -->
+                <section id="employees" class="section active">
+                    <div class="section-header">
+                        <h3>Gestión de Empleados</h3>
+                        <button class="btn-primary" id="addEmployeeBtn">Agregar Empleado</button>
+                    </div>
+
+                    <div class="search-bar">
+                        <input type="text" id="employeeSearch" placeholder="Buscar empleado...">
+                    </div>
+
+                    <div class="table-container">
+                        <table id="employeesTable">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Departamento</th>
+                                    <th>Puesto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Employee rows will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Products Section -->
+                <section id="products" class="section">
+                    <div class="section-header">
+                        <h3>Gestión de Productos</h3>
+                        <button class="btn-primary" id="addProductBtn">Agregar Producto</button>
+                    </div>
+
+                    <div class="search-bar">
+                        <input type="text" id="productSearch" placeholder="Buscar producto...">
+                    </div>
+
+                    <div class="table-container">
+                        <table id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Tipo</th>
+                                    <th>Número</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Product rows will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Reports Section -->
+                <section id="reports" class="section">
+                    <div class="section-header">
+                        <h3>Reportes</h3>
+                    </div>
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <h4>Empleados por Departamento</h4>
+                            <div class="report-content">
+                                <!-- Chart will be added here -->
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <h4>Productos por Tipo</h4>
+                            <div class="report-content">
+                                <!-- Chart will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div id="addEmployeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Agregar Empleado</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="addEmployeeForm">
+                <div class="form-group">
+                    <label for="employeeCode">Código de Empleado</label>
+                    <input type="text" id="employeeCode" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeName">Nombre Completo</label>
+                    <input type="text" id="employeeName" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeDocument">Documento de Identidad</label>
+                    <input type="text" id="employeeDocument" pattern="[0-9]{8}-[0-9]" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeBirthDate">Fecha de Nacimiento</label>
+                    <input type="date" id="employeeBirthDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeStreet">Calle</label>
+                    <input type="text" id="employeeStreet" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeHouse">Número de Casa</label>
+                    <input type="text" id="employeeHouse" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeCity">Ciudad</label>
+                    <input type="text" id="employeeCity" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeDepartment">Departamento</label>
+                    <input type="text" id="employeeDepartment" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeePosition">Puesto</label>
+                    <input type="text" id="employeePosition" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeWorkDepartment">Departamento en la Empresa</label>
+                    <select id="employeeWorkDepartment" required>
+                        <option value="">Seleccione...</option>
+                        <option value="finanzas">Finanzas</option>
+                        <option value="atencion">Atención al Cliente</option>
+                        <option value="gerencia">Gerencia</option>
+                        <option value="servicios">Servicios Varios</option>
+                        <option value="seguridad">Seguridad</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="employeeSalary">Sueldo</label>
+                    <input type="number" id="employeeSalary" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeProfession">Profesión</label>
+                    <input type="text" id="employeeProfession" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeeEmail">Correo Electrónico</label>
+                    <input type="email" id="employeeEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="employeePhone">Teléfono</label>
+                    <input type="tel" id="employeePhone" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Guardar</button>
+                    <button type="button" class="btn-secondary close-modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+</body>
+</html> 
