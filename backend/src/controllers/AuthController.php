@@ -5,35 +5,38 @@ use Firebase\JWT\Key;
 
 class AuthController {
     public function login($data, $response) {
-        $user = (new UserModel())->findByEmail($data['email'] ?? '');
+        global $pdo;
 
-        if (!$user || !password_verify($data['password'], $user['password'])) {
+        $email = $data['email'];
+        $password = $data['password'];
+
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user || !password_verify($password, $user['password'])) {
             $response->getBody()->write(json_encode(['error' => 'Credenciales inválidas']));
             return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
         }
 
-        $payload = [
-            'id' => $user['id'],
-            'email' => $user['email'],
-            'role' => $user['role'],
-            'iat' => time(),
-            'exp' => time() + 3600
-        ];
+        $clientStmt = $pdo->prepare("SELECT * FROM clients WHERE user_id = ?");
+        $clientStmt->execute([$user['id']]);
+        $clientProfile = $clientStmt->fetch(PDO::FETCH_ASSOC);
 
-        $jwt = JWT::encode($payload, $_ENV['JWT_SECRET'], 'HS256');
+        if (!$clientProfile) {
+            $response->getBody()->write(json_encode(['error' => 'Cliente no encontrado']));
+            return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+        }
+
+        $token = 'dummy-jwt-or-real-token';
 
         $response->getBody()->write(json_encode([
-            'access_token' => $jwt,
-            'user' => [
-                'id' => $user['id'],
-                'email' => $user['email'],
-                'role' => $user['role']
-            ]
+            'access_token' => $token,
+            'user' => $clientProfile // ✅ Esto tendrá todos los datos del perfil
         ]));
 
         return $response->withHeader('Content-Type', 'application/json');
     }
-
     public function register($data, $response) {
         try {
             $email = $data['email'] ?? null;
