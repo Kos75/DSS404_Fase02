@@ -1,24 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
 
-* {
+html, body, #root {
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
+    overflow: hidden;
     font-family: 'Poppins', sans-serif;
-    overflow-x: hidden;
-    background: #f0f2f5;
 }
 
 .container {
-    position: relative;
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    min-height: 100vh;
-    background-color: #fff;
+    height: 100vh;
     overflow: hidden;
+    position: relative;
 }
+
 
 .forms-container {
     position: absolute;
@@ -152,6 +151,7 @@ form.sign-in-form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
+
 
 .container:before {
     content: "";
