@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import OpenProductForm from './OpenProductForm';
 
 export default function ProductsSection() {
+    const [showForm, setShowForm] = useState(false);
+
     return (
         <>
-            <div className="mb-4">
+            <div className="d-flex justify-content-between align-items-center mb-4">
                 <h3>Mis Productos</h3>
+                <button className="btn btn-success" onClick={() => setShowForm(true)}>
+                    + Abrir Cuenta
+                </button>
             </div>
+
+            {showForm && (
+                <div className="mb-4">
+                    <OpenProductForm onClose={() => setShowForm(false)} />
+                </div>
+            )}
 
             <div className="row g-4">
                 {['Cuentas', 'Tarjetas', 'Préstamos', 'Seguros'].map((category, idx) => (

@@ -11,7 +11,7 @@ $app->get('/api/products/{client_id}', function ($request, $response, $args) {
 });
 
 $app->post('/api/products', function ($request, $response) {
-    $data = $request->getParsedBody();
+    $data = json_decode($request->getBody()->getContents(), true);
     $controller = new ProductController();
     return $controller->create($data, $response);
 });
