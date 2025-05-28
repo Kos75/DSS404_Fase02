@@ -12,7 +12,8 @@ export default function ClientPanel() {
     const [activeSection, setActiveSection] = useState('products');
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
+
 
 
     return (
@@ -45,8 +46,14 @@ export default function ClientPanel() {
 
                 </div>
 
-                {showModal && <EditProfileModal onClose={() => setShowModal(false)} />}
-            </main>
+                {showModal && (
+                    <EditProfileModal
+                        user={user}
+                        setUser={setUser}
+                        onClose={() => setShowModal(false)}
+                    />
+                )}
+                </main>
         </div>
     );
 }
