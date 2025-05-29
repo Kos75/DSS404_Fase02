@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function ATMSidebar({ active, onNavigate }) {
+    const navigate = useNavigate();
+
     return (
         <div className="bg-dark text-white vh-100 p-3" style={{ width: '250px' }}>
             <h4 className="text-center mb-4">Panel ATM</h4>
@@ -13,12 +16,20 @@ export default function ATMSidebar({ active, onNavigate }) {
                         Transacciones
                     </button>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item mb-4">
                     <button
                         className={`btn w-100 text-start ${active === 'history' ? 'btn-primary' : 'btn-outline-light'}`}
                         onClick={() => onNavigate('history')}
                     >
                         Historial
+                    </button>
+                </li>
+                <li className="nav-item mt-auto">
+                    <button
+                        className="btn btn-outline-warning w-100 text-start"
+                        onClick={() => navigate('/client')}
+                    >
+                        ⬅️ Volver al Panel
                     </button>
                 </li>
             </ul>

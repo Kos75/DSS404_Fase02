@@ -10,6 +10,7 @@ export default function OpenProductForm({ onClose, onProductCreated }) {
         balance: '',
     });
 
+
     const handleChange = (e) =>
         setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -21,9 +22,9 @@ export default function OpenProductForm({ onClose, onProductCreated }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 client_id: user.id,
-                product_type: form.product_type,
+                product_type: form.product_type || 'Otro',
                 product_name: form.product_name,
-                balance: parseFloat(form.balance),  
+                balance: parseFloat(form.balance),
             })
         });
 
@@ -68,8 +69,8 @@ export default function OpenProductForm({ onClose, onProductCreated }) {
                     required
                 >
                     <option value="">Seleccione</option>
-                    <option value="ahorro">Ahorro</option>
-                    <option value="corriente">Corriente</option>
+                    <option value="Cuenta de Ahorro">Ahorro</option>
+                    <option value="Corriente">Corriente</option>
                 </select>
             </div>
 

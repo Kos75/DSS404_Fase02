@@ -1,37 +1,76 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import { useAuth } from '../../context/AuthContext';
+
 
 export default function TransactionsSection() {
+    const { user } = useAuth();
+    const [transactions, setTransactions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (!user?.id) return;
+
+        const fetchHistory = async () => {
+            try {
+                const res = await fetch(`http://localhost:8000/api/atm/history?client_id=${user.id}`);
+                const data = await res.json();
+
+                if (Array.isArray(data)) {
+                    setTransactions(data);
+                } else if (Array.isArray(data.transactions)) {
+                    setTransactions(data.transactions);
+                } else {
+                    throw new Error('Formato de datos inesperado');
+                }
+            } catch (err) {
+                console.error("❌ Error al cargar historial:", err);
+                setError('Error al cargar historial de transacciones');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHistory();
+    }, [user]);
+
     return (
-        <>
-            <div className="d-flex justify-content-between align-items-center mb-3">
-                <h3>Historial de Transacciones</h3>
-            </div>
+        <div className="card shadow-sm p-4">
+            <h4 className="mb-3">Historial de Transacciones</h4>
 
-            <input type="text" className="form-control mb-3" placeholder="Buscar transacción..." />
+            {loading && <p>Cargando...</p>}
+            {error && <p className="text-danger">{error}</p>}
 
-            <div className="table-responsive">
-                <table className="table table-striped table-hover">
-                    <thead className="table-light">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Producto</th>
-                        <th>Tipo</th>
-                        <th>Monto</th>
-                        <th>Estado</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {/* Filas dinámicas */}
-                    <tr>
-                        <td>2024-05-01</td>
-                        <td>Cuenta Ahorros</td>
-                        <td>Depósito</td>
-                        <td>$500</td>
-                        <td><span className="badge bg-success">Completado</span></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </>
+            {!loading && !error && (
+                <div className="table-responsive">
+                    <table className="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Monto ($)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {transactions.length === 0 ? (
+                            <tr>
+                                <td colSpan="3" className="text-center text-muted">
+                                    No hay transacciones aún.
+                                </td>
+                            </tr>
+                        ) : (
+                            transactions.map((t, idx) => (
+                                <tr key={idx}>
+                                    <td>{t.date || t.created_at || '—'}</td>
+                                    <td>{t.type}</td>
+                                    <td>${parseFloat(t.amount).toFixed(2)}</td>
+                                </tr>
+                            ))
+                        )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </div>
     );
 }
