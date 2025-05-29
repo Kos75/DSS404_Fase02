@@ -3,6 +3,7 @@ import ATMSidebar from '../components/ATM/ATMSidebar';
 import ATMTopBar from '../components/ATM/ATMTopBar';
 import ATMTransactionForm from '../components/ATM/ATMTransactionForm';
 import ATMTransactionHistory from '../components/ATM/ATMTransactionHistory';
+import ClientPanel from "./ClientPanel.jsx";
 
 export default function ATMDashboard() {
     const [section, setSection] = useState('transactions');

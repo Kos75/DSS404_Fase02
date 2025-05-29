@@ -1,34 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
 export default function ATMTransactionHistory() {
-    const dummyData = [
-        { fecha: '2024-05-25', tipo: 'Abono', monto: 50.0 },
-        { fecha: '2024-05-24', tipo: 'Retiro', monto: 20.0 },
-    ];
+    const { user } = useAuth();
+    const [transactions, setTransactions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (!user?.id) return;
+
+        const fetchHistory = async () => {
+            try {
+                const res = await fetch(`http://localhost:8000/api/atm/history?client_id=${user.id}`);
+                const data = await res.json();
+
+                if (Array.isArray(data)) {
+                    setTransactions(data);
+                } else if (Array.isArray(data.transactions)) {
+                    setTransactions(data.transactions);
+                } else {
+                    throw new Error('Formato de datos inesperado');
+                }
+            } catch (err) {
+                console.error("❌ Error al cargar historial:", err);
+                setError('Error al cargar historial de transacciones');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHistory();
+    }, [user]);
 
     return (
         <div className="card shadow-sm p-4">
             <h4 className="mb-3">Historial de Transacciones</h4>
-            <div className="table-responsive">
-                <table className="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Tipo</th>
-                        <th>Monto ($)</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {dummyData.map((t, idx) => (
-                        <tr key={idx}>
-                            <td>{t.fecha}</td>
-                            <td>{t.tipo}</td>
-                            <td>${t.monto.toFixed(2)}</td>
+
+            {loading && <p>Cargando...</p>}
+            {error && <p className="text-danger">{error}</p>}
+
+            {!loading && !error && (
+                <div className="table-responsive">
+                    <table className="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Monto ($)</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                        {transactions.length === 0 ? (
+                            <tr>
+                                <td colSpan="3" className="text-center text-muted">
+                                    No hay transacciones aún.
+                                </td>
+                            </tr>
+                        ) : (
+                            transactions.map((t, idx) => (
+                                <tr key={idx}>
+                                    <td>{t.date || t.created_at || '—'}</td>
+                                    <td>{t.type}</td>
+                                    <td>${parseFloat(t.amount).toFixed(2)}</td>
+                                </tr>
+                            ))
+                        )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 }

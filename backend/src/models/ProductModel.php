@@ -9,10 +9,19 @@ class ProductModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function create($clientId, $type, $name, $balance = 0) {
+    public function create($data) {
         global $pdo;
+
         $stmt = $pdo->prepare("INSERT INTO products (client_id, product_type, product_name, balance) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$clientId, $type, $name, $balance]);
+        $stmt->execute([
+            $data['client_id'],
+            $data['product_type'],
+            $data['product_name'],
+            $data['balance']
+        ]);
+
+
         return $pdo->lastInsertId();
     }
+
 }

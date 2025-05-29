@@ -5,12 +5,16 @@ import ClientTopBar from '../components/client/ClientTopBar';
 import ProductsSection from '../components/client/ProductsSection';
 import TransactionsSection from '../components/client/TransactionsSection';
 import ProfileSection from '../components/client/ProfileSection';
+import { useAuth } from '../context/authContext';
 import EditProfileModal from '../components/client/EditProfileModal';
 
 export default function ClientPanel() {
     const [activeSection, setActiveSection] = useState('products');
     const [showModal, setShowModal] = useState(false);
-    const navigate = useNavigate(); // ✅ inicializamos navegación
+    const navigate = useNavigate();
+    const { user, setUser } = useAuth();
+
+
 
     return (
         <div className="d-flex min-vh-100">
@@ -37,12 +41,19 @@ export default function ClientPanel() {
                     )}
 
                     {activeSection === 'profile' && (
-                        <ProfileSection onEdit={() => setShowModal(true)} />
+                        <ProfileSection user={user} onEdit={() => setShowModal(true)} />
                     )}
+
                 </div>
 
-                {showModal && <EditProfileModal onClose={() => setShowModal(false)} />}
-            </main>
+                {showModal && (
+                    <EditProfileModal
+                        user={user}
+                        setUser={setUser}
+                        onClose={() => setShowModal(false)}
+                    />
+                )}
+                </main>
         </div>
     );
 }

@@ -15,3 +15,12 @@ $app->get('/api/client/{id}/balance', function ($request, $response, $args) {
     return $controller->getBalanceById($args['id'], $response);
 });
 
+$app->put('/api/client/{id}', function ($request, $response, $args) {
+    $clientId = $args['id'];
+    $data = $request->getParsedBody();
+
+    $controller = new ClientController();
+    return $controller->updateClient($clientId, $data, $response);
+});
+
+
